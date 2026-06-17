@@ -11,13 +11,11 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="clouds" aria-hidden="true"></div>
+  <img class="balloon-bg" src="balloon.png" alt="" aria-hidden="true" />
 
   <main class="card">
-    <img class="hero-img" src="hero.png" alt="הקיץ מגשימים חלומות – ממריאים לקיץ של חוויות" />
-
     <section class="intro">
-      <div class="badge">✨ ובכל שבוע נגשים חלום אחד מיוחד!</div>
+      <div class="badge"> בכל שבוע נגשים חלום אחד מיוחד</div>
       <h1>שלחו עכשיו את החלום שלכם</h1>
       <p class="subtitle">
         רשת המרכזים הקהילתיים מזמינה אתכם לשלוח חלום, רעיון קסום או משאלה
@@ -50,7 +48,7 @@
 
       <div class="field">
         <label for="dreamDescription">מהו החלום? <span class="req">*</span></label>
-        <textarea id="dreamDescription" name="dreamDescription" rows="5" placeholder="ספרו לנו בכמה מילים על החלום ועל הילד/ה..." required></textarea>
+        <textarea id="dreamDescription" name="dreamDescription" rows="5" placeholder="ספרו לנו בכמה מילים על החלום..." required></textarea>
       </div>
 
       <button type="submit" id="submit-btn" class="submit">
@@ -61,13 +59,13 @@
       <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
     </form>
 
-    <footer class="foot">בכל שדה שמסומן ב־<span class="req">*</span> חובה למלא 💜</footer>
+    <footer class="foot">כל שדה שמסומן ב־<span class="req">*</span> חובה למלא </footer>
   </main>
 
   <div id="success-overlay" class="overlay" hidden>
     <div class="overlay-card">
       <div class="checkmark">🎈</div>
-      <h2>החלום נשלח! 🌟</h2>
+      <h2>החלום נשלח! </h2>
       <p>תודה ששיתפתם אותנו. ובכל שבוע נגשים חלום אחד מיוחד – אולי הפעם זה שלכם!</p>
       <button type="button" id="another-btn" class="ghost">שליחת חלום נוסף</button>
     </div>

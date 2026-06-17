@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -8,7 +9,7 @@ const landingDreamsRouter = require('./routes/landingDreams');
 const app = express();
 
 // 1. הגדרת פורט דינמי שמתאים לענן (רנדר מזריקה את הפורט ל-process.env.PORT)
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 2. הגדרת מחרוזת חיבור גמישה (נעביר לה את הקישור האמיתי של מונגו בהמשך)
-const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:21017/magshimim_db';
+const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/magshimim_db';
 
 mongoose.connect(mongoURI)
   .then(() => console.log('Successfully connected to MongoDB! 🍃'))

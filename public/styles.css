@@ -9,7 +9,7 @@
   --peach: #ffcfa8;
   --text: #5b3b6b;
   --muted: #8d7aa0;
-  --card: rgba(255, 255, 255, 0.78);
+  --card: rgba(255, 255, 255, 0.55);
   --border: rgba(240, 106, 168, 0.22);
   --error: #e85a7a;
   --success: #4cae8a;
@@ -25,11 +25,12 @@ body {
   font-family: 'Heebo', system-ui, -apple-system, sans-serif;
   color: var(--text);
   min-height: 100vh;
-  background:
-    radial-gradient(1100px 500px at 85% -5%, rgba(255, 143, 192, 0.30), transparent 60%),
-    radial-gradient(900px 500px at 0% 0%, rgba(255, 207, 168, 0.30), transparent 55%),
-    radial-gradient(900px 600px at 50% 110%, rgba(207, 234, 250, 0.55), transparent 60%),
-    linear-gradient(160deg, var(--sky-1), var(--sky-2) 55%, var(--sky-3));
+  background-image: url('sky.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-color: var(--sky-1);
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -38,48 +39,40 @@ body {
   overflow-x: hidden;
 }
 
-.clouds {
+.balloon-bg {
   position: fixed;
-  inset: 0;
-  background-image:
-    radial-gradient(60px 28px at 15% 22%, rgba(255, 255, 255, 0.75), transparent 70%),
-    radial-gradient(80px 34px at 80% 16%, rgba(255, 255, 255, 0.65), transparent 70%),
-    radial-gradient(70px 30px at 60% 78%, rgba(255, 255, 255, 0.6), transparent 70%),
-    radial-gradient(50px 24px at 30% 88%, rgba(255, 255, 255, 0.55), transparent 70%);
+  z-index: 0;
+  width: min(46vw, 580px);
+  height: auto;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 1;
   pointer-events: none;
-  opacity: 0.9;
-  animation: drift 12s ease-in-out infinite alternate;
+  filter: drop-shadow(0 22px 42px rgba(150, 110, 180, 0.25));
+  animation: float 6s ease-in-out infinite alternate;
 }
 
-@keyframes drift {
-  from { transform: translateX(-12px); }
-  to { transform: translateX(12px); }
+@keyframes float {
+  from { transform: translateY(-54%); }
+  to { transform: translateY(-46%); }
 }
 
 .card {
   position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 560px;
-  background: var(--card);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 0 0 32px;
-  overflow: hidden;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 8px 0 32px;
   animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 @keyframes rise {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-.hero-img {
-  display: block;
-  width: 100%;
-  height: auto;
 }
 
 .intro {
@@ -104,17 +97,16 @@ h1 {
   font-weight: 900;
   margin: 0 0 10px;
   line-height: 1.2;
-  background: linear-gradient(90deg, #d6488f, #ff7eb3);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #d6488f;
+  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.85), 0 2px 3px rgba(255, 255, 255, 0.7);
 }
 
 .subtitle {
-  color: var(--muted);
+  color: #6e5280;
   font-size: 1rem;
   line-height: 1.7;
   margin: 0;
+  text-shadow: 0 1px 6px rgba(255, 255, 255, 0.8);
 }
 
 form {
@@ -136,6 +128,7 @@ label {
   font-size: 0.92rem;
   font-weight: 700;
   color: var(--text);
+  text-shadow: 0 1px 6px rgba(255, 255, 255, 0.85);
 }
 
 .req { color: var(--accent); }
@@ -145,7 +138,7 @@ input, textarea {
   font-size: 1rem;
   color: var(--text);
   background: rgba(255, 255, 255, 0.92);
-  border: 1.5px solid var(--border);
+  border: 1px solid rgba(120, 82, 140, 0.55);
   border-radius: 14px;
   padding: 13px 15px;
   transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
@@ -220,7 +213,8 @@ input.invalid, textarea.invalid {
   margin-top: 20px;
   text-align: center;
   font-size: 0.82rem;
-  color: var(--muted);
+  color: #6e5280;
+  text-shadow: 0 1px 6px rgba(255, 255, 255, 0.8);
 }
 
 .overlay {
@@ -283,9 +277,14 @@ input.invalid, textarea.invalid {
 
 .ghost:hover { background: var(--accent-soft); transform: translateY(-1px); }
 
+@media (max-width: 1024px) {
+  .balloon-bg { opacity: 0.4; width: min(60vw, 360px); }
+}
+
 @media (max-width: 520px) {
   .intro { padding: 20px 18px 4px; }
   form { padding: 18px 18px 0; }
   h1 { font-size: 1.55rem; }
   .row { grid-template-columns: 1fr; }
+  .balloon-bg { opacity: 0.18; width: 80vw; top: 28%; }
 }
