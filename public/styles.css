@@ -246,36 +246,22 @@ input.invalid, textarea.invalid {
   animation: rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
-.checkmark {
-  width: 76px;
-  height: 76px;
-  margin: 0 auto 18px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-2), var(--peach));
-  font-size: 2.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 10px 24px rgba(240, 106, 168, 0.35);
+.overlay-balloon {
+  display: block;
+  width: 150px;
+  height: auto;
+  margin: 8px auto 16px;
+  filter: drop-shadow(0 14px 28px rgba(150, 110, 180, 0.3));
+  animation: bob 5s ease-in-out infinite alternate;
+}
+
+@keyframes bob {
+  from { transform: translateY(-5px); }
+  to { transform: translateY(5px); }
 }
 
 .overlay-card h2 { margin: 0 0 8px; font-size: 1.5rem; color: var(--text); }
-.overlay-card p { margin: 0 0 22px; color: var(--muted); line-height: 1.6; }
-
-.ghost {
-  font-family: inherit;
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--accent);
-  background: #fff;
-  border: 1.5px solid var(--border);
-  border-radius: 14px;
-  padding: 12px 22px;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
-}
-
-.ghost:hover { background: var(--accent-soft); transform: translateY(-1px); }
+.overlay-card p { margin: 0; color: var(--muted); line-height: 1.6; }
 
 @media (max-width: 1024px) {
   .balloon-bg { opacity: 0.4; width: min(60vw, 360px); }

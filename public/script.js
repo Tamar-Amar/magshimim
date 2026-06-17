@@ -2,7 +2,6 @@ const form = document.getElementById('dream-form');
 const submitBtn = document.getElementById('submit-btn');
 const message = document.getElementById('form-message');
 const overlay = document.getElementById('success-overlay');
-const anotherBtn = document.getElementById('another-btn');
 
 const requiredFields = ['childName', 'address', 'email', 'phone', 'dreamDescription'];
 
@@ -62,19 +61,17 @@ form.addEventListener('submit', async (e) => {
     if (res.ok) {
       form.reset();
       overlay.hidden = false;
-    } else {
-      setMessage(data.message || 'אופס, משהו השתבש. נסו שוב בעוד רגע.', 'error');
+      // לאחר שליחה מוצלחת לא מאפשרים למלא שוב
+      submitBtn.classList.remove('loading');
+      return;
     }
+
+    setMessage(data.message || 'אופס, משהו השתבש. נסו שוב בעוד רגע.', 'error');
+    submitBtn.disabled = false;
+    submitBtn.classList.remove('loading');
   } catch (err) {
     setMessage('בעיית תקשורת עם השרת. בדקו את החיבור ונסו שוב.', 'error');
-  } finally {
     submitBtn.disabled = false;
     submitBtn.classList.remove('loading');
   }
-});
-
-anotherBtn.addEventListener('click', () => {
-  overlay.hidden = true;
-  setMessage('');
-  form.childName.focus();
 });
