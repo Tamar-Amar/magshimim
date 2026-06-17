@@ -3,25 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>מגשימים חלומות</title>
-  <meta name="description" content="ספרו לנו על החלום, ואנחנו נעשה הכל כדי להגשים אותו." />
+  <title>הקיץ מגשימים חלומות</title>
+  <meta name="description" content="שלחו את החלום שלכם – ובכל שבוע נגשים חלום אחד מיוחד!" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="bg-stars" aria-hidden="true"></div>
+  <div class="clouds" aria-hidden="true"></div>
 
   <main class="card">
-    <header class="hero">
-      <div class="badge">✨ הגשמת חלומות לילדים</div>
-      <h1>איזה חלום נגשים יחד?</h1>
+    <img class="hero-img" src="hero.png" alt="הקיץ מגשימים חלומות – ממריאים לקיץ של חוויות" />
+
+    <section class="intro">
+      <div class="badge">✨ ובכל שבוע נגשים חלום אחד מיוחד!</div>
+      <h1>שלחו עכשיו את החלום שלכם</h1>
       <p class="subtitle">
-        כל ילד וילדה ראויים לראות חלום מתגשם. ספרו לנו את הסיפור,
-        ואנחנו ניצור איתכם קשר אישי כדי לעשות את הקסם.
+        רשת המרכזים הקהילתיים מזמינה אתכם לשלוח חלום, רעיון קסום או משאלה
+        שיכולים להוסיף שמחה, טוב וחוויה לעיר הנפלאה שלנו.
+        מלאו את הפרטים – ואולי תזכו בטיסה משפחתית בכדור פורח! 🎈
       </p>
-    </header>
+    </section>
 
     <form id="dream-form" novalidate>
       <div class="field">
@@ -51,7 +54,7 @@
       </div>
 
       <button type="submit" id="submit-btn" class="submit">
-        <span class="btn-text">שולחים את החלום</span>
+        <span class="btn-text">ממריאים עם החלום 🎈</span>
         <span class="spinner" aria-hidden="true"></span>
       </button>
 
@@ -63,9 +66,9 @@
 
   <div id="success-overlay" class="overlay" hidden>
     <div class="overlay-card">
-      <div class="checkmark">✓</div>
-      <h2>החלום נשמר! 🌟</h2>
-      <p>תודה ששיתפתם אותנו. ניצור איתכם קשר בהקדם.</p>
+      <div class="checkmark">🎈</div>
+      <h2>החלום נשלח! 🌟</h2>
+      <p>תודה ששיתפתם אותנו. ובכל שבוע נגשים חלום אחד מיוחד – אולי הפעם זה שלכם!</p>
       <button type="button" id="another-btn" class="ghost">שליחת חלום נוסף</button>
     </div>
   </div>
