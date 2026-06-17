@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>מגשימים חלומות</title>
+  <meta name="description" content="ספרו לנו על החלום, ואנחנו נעשה הכל כדי להגשים אותו." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-stars" aria-hidden="true"></div>
+
+  <main class="card">
+    <header class="hero">
+      <div class="badge">✨ הגשמת חלומות לילדים</div>
+      <h1>איזה חלום נגשים יחד?</h1>
+      <p class="subtitle">
+        כל ילד וילדה ראויים לראות חלום מתגשם. ספרו לנו את הסיפור,
+        ואנחנו ניצור איתכם קשר אישי כדי לעשות את הקסם.
+      </p>
+    </header>
+
+    <form id="dream-form" novalidate>
+      <div class="field">
+        <label for="childName">שם הילד/ה <span class="req">*</span></label>
+        <input type="text" id="childName" name="childName" placeholder="למשל: נועה" required />
+      </div>
+
+      <div class="field">
+        <label for="parentName">שם ההורה / איש הקשר</label>
+        <input type="text" id="parentName" name="parentName" placeholder="השם שלכם (לא חובה)" />
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="phone">טלפון <span class="req">*</span></label>
+          <input type="tel" id="phone" name="phone" placeholder="050-0000000" inputmode="tel" required />
+        </div>
+        <div class="field">
+          <label for="email">אימייל</label>
+          <input type="email" id="email" name="email" placeholder="name@example.com (לא חובה)" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="dreamDescription">מהו החלום? <span class="req">*</span></label>
+        <textarea id="dreamDescription" name="dreamDescription" rows="5" placeholder="ספרו לנו בכמה מילים על החלום ועל הילד/ה..." required></textarea>
+      </div>
+
+      <button type="submit" id="submit-btn" class="submit">
+        <span class="btn-text">שולחים את החלום</span>
+        <span class="spinner" aria-hidden="true"></span>
+      </button>
+
+      <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+    </form>
+
+    <footer class="foot">בכל שדה שמסומן ב־<span class="req">*</span> חובה למלא 💜</footer>
+  </main>
+
+  <div id="success-overlay" class="overlay" hidden>
+    <div class="overlay-card">
+      <div class="checkmark">✓</div>
+      <h2>החלום נשמר! 🌟</h2>
+      <p>תודה ששיתפתם אותנו. ניצור איתכם קשר בהקדם.</p>
+      <button type="button" id="another-btn" class="ghost">שליחת חלום נוסף</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
