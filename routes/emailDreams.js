@@ -1,14 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { Dream, IrregularRequest } = require('../models/Dream');
+const EmailDream = require('../models/EmailDream');
+const IrregularRequest = require('../models/IrregularRequest');
 
-router.post('/email', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { childName, phone, dreamDescription, email } = req.body;
 
     // תנאי 1: אם הכול חזר null מה-AI (מייל ספאם / ניוזלטר / הודעה לא קשורה) - נתעלם
     if (!childName && !phone && !dreamDescription) {
-      console.log(`[Webhook] Ignored unrelated email from: ${email}`);
+      console.log(`[Email] Ignored unrelated email from: ${email}`);
       return res.status(200).json({ message: 'Ignored - unrelated email.' });
     }
 
@@ -23,28 +24,29 @@ router.post('/email', async (req, res) => {
         phone,
         dreamDescription,
         email,
-        reason
+        source: 'email',
+        reason,
       });
 
       await irregular.save();
-      console.log(`[Webhook] Saved to Irregular Requests. Reason: ${reason}`);
+      console.log(`[Email] Saved to Irregular Requests. Reason: ${reason}`);
       return res.status(201).json({ message: 'Saved to irregular requests.' });
     }
 
-    // תנאי 3: פנייה תקינה לחלוטין! שומרים במאגר הראשי
-    const newDream = new Dream({
+    // תנאי 3: פנייה תקינה לחלוטין! שומרים באוסף email_dreams
+    const newDream = new EmailDream({
       childName,
       phone,
       dreamDescription,
-      email
+      email,
     });
 
     await newDream.save();
-    console.log(`[Webhook] Successfully saved new dream for: ${childName}`);
-    return res.status(201).json({ message: 'Dream successfully saved to main database!' });
+    console.log(`[Email] Successfully saved new dream for: ${childName}`);
+    return res.status(201).json({ message: 'Dream successfully saved to email_dreams!' });
 
   } catch (error) {
-    console.error('Error processing webhook:', error);
+    console.error('Error processing email webhook:', error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 });

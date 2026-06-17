@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const dreamsRouter = require('./routes/dreams');
+const emailDreamsRouter = require('./routes/emailDreams');
+const yemotDreamsRouter = require('./routes/yemotDreams');
 
 const app = express();
 
@@ -16,7 +17,9 @@ mongoose.connect(mongoURI)
   .then(() => console.log('Successfully connected to MongoDB! 🍃'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
-app.use('/api/dreams', dreamsRouter);
+// כל מקור נתונים מקבל נתיב ייעודי משלו
+app.use('/api/dreams/email', emailDreamsRouter);
+app.use('/api/dreams/yemot', yemotDreamsRouter);
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running smoothly on port ${PORT} 🚀`);
