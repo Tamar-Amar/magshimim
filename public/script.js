@@ -4,7 +4,7 @@ const message = document.getElementById('form-message');
 const overlay = document.getElementById('success-overlay');
 const anotherBtn = document.getElementById('another-btn');
 
-const requiredFields = ['childName', 'phone', 'dreamDescription'];
+const requiredFields = ['childName', 'address', 'email', 'phone', 'dreamDescription'];
 
 function setMessage(text, type) {
   message.textContent = text || '';
@@ -41,9 +41,9 @@ form.addEventListener('submit', async (e) => {
 
   const payload = {
     childName: form.childName.value.trim(),
-    parentName: form.parentName.value.trim(),
-    phone: form.phone.value.trim(),
+    address: form.address.value.trim(),
     email: form.email.value.trim(),
+    phone: form.phone.value.trim(),
     dreamDescription: form.dreamDescription.value.trim(),
   };
 

@@ -4,22 +4,22 @@ const LandingDream = require('../models/LandingDream');
 
 router.post('/', async (req, res) => {
   try {
-    const { childName, phone, dreamDescription, email, parentName } = req.body;
+    const { childName, address, email, phone, dreamDescription } = req.body;
 
     // ולידציה בסיסית בצד השרת (בנוסף לוולידציה בדפדפן)
-    if (!childName || !phone || !dreamDescription) {
+    if (!childName || !address || !email || !phone || !dreamDescription) {
       return res.status(400).json({
         success: false,
-        message: 'חסרים שדות חובה: שם הילד/ה, טלפון ותיאור החלום.',
+        message: 'חסרים שדות חובה: שם הילד/ה, כתובת, מייל, טלפון ותיאור החלום.',
       });
     }
 
     const newDream = new LandingDream({
       childName,
+      address,
+      email,
       phone,
       dreamDescription,
-      email,
-      parentName,
     });
 
     await newDream.save();
