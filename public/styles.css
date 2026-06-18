@@ -34,9 +34,37 @@ body {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 28px 20px;
+  padding: 100px 20px 28px;
   position: relative;
   overflow-x: hidden;
+}
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  z-index: 15;
+  background-image: url('sky.webp');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent);
+  mask-image: linear-gradient(to bottom, #000 72%, transparent);
+  pointer-events: none;
+}
+
+.site-logos {
+  position: fixed;
+  top: 20px;
+  left: 40px;
+  width: min(42vw, 250px);
+  height: auto;
+  z-index: 20;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 6px rgba(255, 255, 255, 0.6));
 }
 
 .balloon-bg {
@@ -102,7 +130,7 @@ h1 {
 }
 
 .subtitle {
-  color: #6e5280;
+  color: #432c5c;
   font-size: 1rem;
   line-height: 1.7;
   margin: 0;
@@ -210,7 +238,6 @@ input.invalid, textarea.invalid {
 .form-message.success { color: var(--success); }
 
 .foot {
-  margin-top: 20px;
   text-align: center;
   font-size: 0.82rem;
   color: #6e5280;
@@ -264,13 +291,25 @@ input.invalid, textarea.invalid {
 .overlay-card p { margin: 0; color: var(--muted); line-height: 1.6; }
 
 @media (max-width: 1024px) {
-  .balloon-bg { opacity: 0.4; width: min(60vw, 360px); }
+  .balloon-bg { opacity: 0.7; width: min(60vw, 360px); }
 }
 
 @media (max-width: 520px) {
+  body { padding-top: 92px; }
+  .topbar { height: 100px; }
+  .site-logos { width: 185px; top: 12px; left: 14px; }
   .intro { padding: 20px 18px 4px; }
   form { padding: 18px 18px 0; }
   h1 { font-size: 1.55rem; }
   .row { grid-template-columns: 1fr; }
-  .balloon-bg { opacity: 0.18; width: 80vw; top: 28%; }
+  .balloon-bg {
+    opacity: 0.45;
+    width: 80vw;
+    left: 50%;
+    right: auto;
+    margin-left: -40vw;
+    top: 38%;
+    transform: none;
+    animation: bob 5s ease-in-out infinite alternate;
+  }
 }

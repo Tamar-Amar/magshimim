@@ -11,16 +11,17 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="topbar" aria-hidden="true"></div>
+  <img class="site-logos" src="logos.webp" alt="מעגלים · רשת מרכזים קהילתיים בית שמש · מינהל חינוך" />
   <img class="balloon-bg" src="balloon.webp" alt="" aria-hidden="true" />
 
   <main class="card">
     <section class="intro">
-      <div class="badge"> בכל שבוע נגשים חלום אחד מיוחד</div>
-      <h1>שלחו עכשיו את החלום שלכם</h1>
+      <h1>יש לכם חלום מיוחד?<br />ספרו לנו עליו!</h1>
       <p class="subtitle">
-        רשת המרכזים הקהילתיים מזמינה אתכם לשלוח חלום, רעיון קסום או משאלה
-        שיכולים להוסיף שמחה, טוב וחוויה לעיר הנפלאה שלנו.
-        מלאו את הפרטים – ואולי תזכו בטיסה משפחתית בכדור פורח! 🎈
+        רשת המרכזים הקהילתיים מזמינה אתכם לשתף אותנו בחלום, רעיון קסום או משאלה
+        שיכולים להוסיף שמחה, טוב וחוויה לעיר הנפלאה שלנו!
+        מלאו את הפרטים והיכנסו להגרלה על מגוון פרסים חלומיים, ועל טיסה משפחתית בכדור פורח! 
       </p>
     </section>
 
@@ -47,12 +48,12 @@
       </div>
 
       <div class="field">
-        <label for="dreamDescription">מהו החלום? <span class="req">*</span></label>
+        <label for="dreamDescription">מה החלום שלך? <span class="req">*</span></label>
         <textarea id="dreamDescription" name="dreamDescription" rows="5" placeholder="ספרו לנו בכמה מילים על החלום..." required></textarea>
       </div>
 
       <button type="submit" id="submit-btn" class="submit">
-        <span class="btn-text">ממריאים עם החלום 🎈</span>
+        <span class="btn-text">ממריאים עם החלום</span>
         <span class="spinner" aria-hidden="true"></span>
       </button>
 
