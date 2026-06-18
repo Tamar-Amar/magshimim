@@ -295,7 +295,7 @@ input.invalid, textarea.invalid {
 }
 
 @media (max-width: 520px) {
-  body { padding-top: 92px; }
+  body { padding-top: 80px; }
   .topbar { height: 100px; }
   .site-logos { width: 185px; top: 12px; left: 14px; }
   .intro { padding: 20px 18px 4px; }
