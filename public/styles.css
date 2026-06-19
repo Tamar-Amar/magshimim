@@ -25,7 +25,7 @@ body {
   font-family: 'Heebo', system-ui, -apple-system, sans-serif;
   color: var(--text);
   min-height: 100vh;
-  background-image: url('sky.webp');
+  background-image: var(--sky-img);
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -46,7 +46,7 @@ body {
   right: 0;
   height: 140px;
   z-index: 15;
-  background-image: url('sky.webp');
+  background-image: var(--sky-img);
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -71,7 +71,11 @@ body {
   position: fixed;
   z-index: 0;
   width: min(46vw, 580px);
-  height: auto;
+  aspect-ratio: 929 / 941;
+  background-image: var(--balloon-img);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   right: 0;
   top: 50%;
   transform: translateY(-50%);
@@ -274,10 +278,13 @@ input.invalid, textarea.invalid {
 }
 
 .overlay-balloon {
-  display: block;
   width: 150px;
-  height: auto;
+  aspect-ratio: 929 / 941;
   margin: 8px auto 16px;
+  background-image: var(--balloon-img);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   filter: drop-shadow(0 14px 28px rgba(150, 110, 180, 0.3));
   animation: bob 5s ease-in-out infinite alternate;
 }
