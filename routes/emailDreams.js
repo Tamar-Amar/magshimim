@@ -6,15 +6,16 @@ const { appendEmailDream, appendIrregularRequest } = require('../services/google
 
 router.post('/', async (req, res) => {
   try {
-    const { childName, phone, dreamDescription, email } = req.body;
+    // 1. הוספנו כאן את address שמגיע מה-HTTP של Make
+    const { childName, phone, address, dreamDescription, email } = req.body;
 
     // תנאי 1: אם הכול חזר null מה-AI (מייל ספאם / ניוזלטר / הודעה לא קשורה) - נתעלם
-    if (!childName && !phone && !dreamDescription) {
+    if (!childName && !phone && !dreamDescription && !address) {
       console.log(`[Email] Ignored unrelated email from: ${email}`);
       return res.status(200).json({ message: 'Ignored - unrelated email.' });
     }
 
-    // תנאי 2: פנייה חריגה (יש חלום אבל אין טלפון, או להפך)
+    // תנאי 2: פנייה חריגה (השארנו את הלוגיקה שלך - אם בכל זאת Make יפספס משהו ויגיע בלי טלפון או חלום)
     if (!phone || !dreamDescription) {
       let reason = 'unknown';
       if (!phone) reason = 'missing_phone';
@@ -23,6 +24,7 @@ router.post('/', async (req, res) => {
       const irregular = new IrregularRequest({
         childName,
         phone,
+        address, // הוספנו גם כאן לגיבוי
         dreamDescription,
         email,
         source: 'email',
@@ -39,6 +41,7 @@ router.post('/', async (req, res) => {
     const newDream = new EmailDream({
       childName,
       phone,
+      address, // <-- שומרים את הכתובת החדשה!
       dreamDescription,
       email,
     });
