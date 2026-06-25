@@ -71,23 +71,27 @@ body {
   position: fixed;
   z-index: 0;
   width: min(46vw, 580px);
-  aspect-ratio: 929 / 941;
+  aspect-ratio: 813 / 769;
   background-image: var(--balloon-img);
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  right: 0;
+  right: clamp(12px, 3vw, 64px);
   top: 50%;
   transform: translateY(-50%);
   opacity: 1;
   pointer-events: none;
   filter: drop-shadow(0 22px 42px rgba(150, 110, 180, 0.25));
-  animation: float 6s ease-in-out infinite alternate;
+  animation: float 18s ease-in-out infinite;
+  transform-origin: 50% 0%;
 }
 
 @keyframes float {
-  from { transform: translateY(-54%); }
-  to { transform: translateY(-46%); }
+  0%   { transform: translateY(-72%) translateX(0) rotate(-2deg); }
+  25%  { transform: translateY(-60%) translateX(-8px) rotate(0.5deg); }
+  50%  { transform: translateY(-48%) translateX(0) rotate(2deg); }
+  75%  { transform: translateY(-60%) translateX(8px) rotate(0.5deg); }
+  100% { transform: translateY(-72%) translateX(0) rotate(-2deg); }
 }
 
 .card {
@@ -279,19 +283,20 @@ input.invalid, textarea.invalid {
 
 .overlay-balloon {
   width: 150px;
-  aspect-ratio: 929 / 941;
+  aspect-ratio: 813 / 769;
   margin: 8px auto 16px;
   background-image: var(--balloon-img);
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   filter: drop-shadow(0 14px 28px rgba(150, 110, 180, 0.3));
-  animation: bob 5s ease-in-out infinite alternate;
+  animation: bob 9s ease-in-out infinite;
 }
 
 @keyframes bob {
-  from { transform: translateY(-5px); }
-  to { transform: translateY(5px); }
+  0%   { transform: translateY(-26px) rotate(-2deg); }
+  50%  { transform: translateY(26px) rotate(2deg); }
+  100% { transform: translateY(-26px) rotate(-2deg); }
 }
 
 .overlay-card h2 { margin: 0 0 8px; font-size: 1.5rem; color: var(--text); }
@@ -317,6 +322,7 @@ input.invalid, textarea.invalid {
     margin-left: -40vw;
     top: 38%;
     transform: none;
-    animation: bob 5s ease-in-out infinite alternate;
+    transform-origin: 50% 0%;
+    animation: bob 9s ease-in-out infinite;
   }
 }
