@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const YemotDream = require('../models/YemotDream');
 const IrregularRequest = require('../models/IrregularRequest');
-const { appendIrregularRequest } = require('../services/googleSheets');
+const { appendIrregularRequest, appendYemotDream } = require('../services/googleSheets');
 
 // ימות המשיח שולחים בדרך כלל בקשת GET עם הפרמטרים ב-URL (Query Parameters),
 // אבל אם בעתיד תעברי דרך Make עם POST - גם זה ייתפס. לכן ממזגים query + body.
@@ -36,6 +36,7 @@ async function handleYemotDream(req, res) {
     });
 
     await newYemotDream.save();
+    appendYemotDream(newYemotDream);
     console.log(`[Yemot] Successfully saved new dream for phone: ${phone}`);
     return res.status(201).json({ success: true, message: 'Saved from Yemot smoothly!' });
 

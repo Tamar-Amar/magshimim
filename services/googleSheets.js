@@ -1,7 +1,10 @@
 const { google } = require('googleapis');
 const LandingDream = require('../models/LandingDream');
 const EmailDream = require('../models/EmailDream');
+const YemotDream = require('../models/YemotDream');
 const IrregularRequest = require('../models/IrregularRequest');
+
+const NA = '--';
 
 const SHEETS = {
   landing: {
@@ -42,6 +45,22 @@ const SHEETS = {
       request.email || '',
       request.dreamDescription || '',
     ],
+  },
+  all: {
+    name: 'הכל',
+    headers: [
+      'תאריך',
+      'מקור',
+      'סיבה',
+      'שם',
+      'כתובת',
+      'מייל',
+      'טלפון',
+      'תיאור החלום',
+      'מזהה שיחה',
+      'קישור להקלטה',
+    ],
+    formatRow: formatCombinedRow,
   },
 };
 
@@ -92,6 +111,87 @@ function formatSource(source) {
 
 function formatReason(reason) {
   return REASON_LABELS[reason] || reason || '';
+}
+
+function cell(value) {
+  if (value === null || value === undefined || String(value).trim() === '') {
+    return NA;
+  }
+  return value;
+}
+
+function formatCombinedRow(record) {
+  return [
+    formatDate(record.createdAt),
+    formatSource(record.source) || cell(record.source),
+    record.reason ? formatReason(record.reason) : NA,
+    cell(record.childName),
+    cell(record.address),
+    cell(record.email),
+    cell(record.phone),
+    cell(record.dreamDescription),
+    cell(record.callId),
+    cell(record.recordingUrl),
+  ];
+}
+
+function landingToCombinedRecord(dream) {
+  return {
+    createdAt: dream.createdAt,
+    source: 'landing_page',
+    childName: dream.childName,
+    address: dream.address,
+    email: dream.email,
+    phone: dream.phone,
+    dreamDescription: dream.dreamDescription,
+  };
+}
+
+function emailToCombinedRecord(dream) {
+  return {
+    createdAt: dream.createdAt,
+    source: 'email',
+    childName: dream.childName,
+    email: dream.email,
+    phone: dream.phone,
+    dreamDescription: dream.dreamDescription,
+  };
+}
+
+function yemotToCombinedRecord(dream) {
+  return {
+    createdAt: dream.createdAt,
+    source: 'yemot',
+    childName: dream.childName,
+    phone: dream.phone,
+    dreamDescription: dream.dreamDescription,
+    callId: dream.callId,
+    recordingUrl: dream.recordingUrl,
+  };
+}
+
+function irregularToCombinedRecord(request) {
+  return {
+    createdAt: request.createdAt,
+    source: request.source,
+    reason: request.reason,
+    childName: request.childName,
+    email: request.email,
+    phone: request.phone,
+    dreamDescription: request.dreamDescription,
+  };
+}
+
+function buildCombinedRows(landingDreams, emailDreams, yemotDreams, irregularRequests) {
+  const records = [
+    ...landingDreams.map(landingToCombinedRecord),
+    ...emailDreams.map(emailToCombinedRecord),
+    ...yemotDreams.map(yemotToCombinedRecord),
+    ...irregularRequests.map(irregularToCombinedRecord),
+  ];
+
+  records.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  return records.map(formatCombinedRow);
 }
 
 async function ensureSheetExists(sheetName) {
@@ -167,26 +267,33 @@ async function syncAllDreamsToSheets() {
     return;
   }
 
-  const [landingDreams, emailDreams, irregularRequests] = await Promise.all([
+  const [landingDreams, emailDreams, yemotDreams, irregularRequests] = await Promise.all([
     LandingDream.find().sort({ createdAt: -1 }).lean(),
     EmailDream.find().sort({ createdAt: -1 }).lean(),
+    YemotDream.find().sort({ createdAt: -1 }).lean(),
     IrregularRequest.find().sort({ createdAt: -1 }).lean(),
   ]);
+
+  const combinedRows = buildCombinedRows(landingDreams, emailDreams, yemotDreams, irregularRequests);
 
   await Promise.all([
     writeSheet(SHEETS.landing, landingDreams.map(SHEETS.landing.formatRow)),
     writeSheet(SHEETS.email, emailDreams.map(SHEETS.email.formatRow)),
     writeSheet(SHEETS.irregular, irregularRequests.map(SHEETS.irregular.formatRow)),
+    writeSheet(SHEETS.all, combinedRows),
     ensureSheetExists(SHEETS.yemot.name),
   ]);
 
-  console.log(`[Google Sheets] Synced ${landingDreams.length} landing + ${emailDreams.length} email + ${irregularRequests.length} irregular (ימות המשיח — ריק)`);
+  console.log(`[Google Sheets] Synced ${landingDreams.length} landing + ${emailDreams.length} email + ${yemotDreams.length} yemot + ${irregularRequests.length} irregular + ${combinedRows.length} combined`);
 }
 
 async function appendLandingDream(dream) {
   if (!isConfigured()) return;
   try {
-    await appendRow(SHEETS.landing, dream);
+    await Promise.all([
+      appendRow(SHEETS.landing, dream),
+      appendRow(SHEETS.all, landingToCombinedRecord(dream)),
+    ]);
     console.log(`[Google Sheets] Appended landing dream for: ${dream.childName}`);
   } catch (error) {
     console.error('[Google Sheets] Failed to append landing dream:', error.message);
@@ -196,17 +303,33 @@ async function appendLandingDream(dream) {
 async function appendEmailDream(dream) {
   if (!isConfigured()) return;
   try {
-    await appendRow(SHEETS.email, dream);
+    await Promise.all([
+      appendRow(SHEETS.email, dream),
+      appendRow(SHEETS.all, emailToCombinedRecord(dream)),
+    ]);
     console.log(`[Google Sheets] Appended email dream for phone: ${dream.phone}`);
   } catch (error) {
     console.error('[Google Sheets] Failed to append email dream:', error.message);
   }
 }
 
+async function appendYemotDream(dream) {
+  if (!isConfigured()) return;
+  try {
+    await appendRow(SHEETS.all, yemotToCombinedRecord(dream));
+    console.log(`[Google Sheets] Appended yemot dream for phone: ${dream.phone}`);
+  } catch (error) {
+    console.error('[Google Sheets] Failed to append yemot dream:', error.message);
+  }
+}
+
 async function appendIrregularRequest(request) {
   if (!isConfigured()) return;
   try {
-    await appendRow(SHEETS.irregular, request);
+    await Promise.all([
+      appendRow(SHEETS.irregular, request),
+      appendRow(SHEETS.all, irregularToCombinedRecord(request)),
+    ]);
     console.log(`[Google Sheets] Appended irregular request from: ${request.source}`);
   } catch (error) {
     console.error('[Google Sheets] Failed to append irregular request:', error.message);
@@ -218,5 +341,6 @@ module.exports = {
   syncAllDreamsToSheets,
   appendLandingDream,
   appendEmailDream,
+  appendYemotDream,
   appendIrregularRequest,
 };
