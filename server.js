@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const emailDreamsRouter = require('./routes/emailDreams');
 const yemotDreamsRouter = require('./routes/yemotDreams');
 const landingDreamsRouter = require('./routes/landingDreams');
+const { syncAllDreamsToSheets } = require('./services/googleSheets');
 
 const app = express();
 
@@ -21,7 +22,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/magshimim_db';
 
 mongoose.connect(mongoURI)
-  .then(() => console.log('Successfully connected to MongoDB! 🍃'))
+  .then(async () => {
+    console.log('Successfully connected to MongoDB! 🍃');
+    try {
+      await syncAllDreamsToSheets();
+    } catch (err) {
+      console.error('[Google Sheets] Startup sync failed:', err.message);
+    }
+  })
   .catch((err) => console.error('MongoDB connection error:', err));
 
 // כל מקור נתונים מקבל נתיב ייעודי משלו

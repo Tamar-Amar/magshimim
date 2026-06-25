@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const LandingDream = require('../models/LandingDream');
+const { appendLandingDream } = require('../services/googleSheets');
 
 router.post('/', async (req, res) => {
   try {
@@ -23,6 +24,7 @@ router.post('/', async (req, res) => {
     });
 
     await newDream.save();
+    appendLandingDream(newDream);
     console.log(`[Landing] Successfully saved new dream for: ${childName}`);
     return res.status(201).json({ success: true, message: 'החלום נשמר בהצלחה!' });
 

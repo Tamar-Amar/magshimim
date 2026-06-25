@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const EmailDream = require('../models/EmailDream');
 const IrregularRequest = require('../models/IrregularRequest');
+const { appendEmailDream, appendIrregularRequest } = require('../services/googleSheets');
 
 router.post('/', async (req, res) => {
   try {
@@ -29,6 +30,7 @@ router.post('/', async (req, res) => {
       });
 
       await irregular.save();
+      appendIrregularRequest(irregular);
       console.log(`[Email] Saved to Irregular Requests. Reason: ${reason}`);
       return res.status(201).json({ message: 'Saved to irregular requests.' });
     }
@@ -42,6 +44,7 @@ router.post('/', async (req, res) => {
     });
 
     await newDream.save();
+    appendEmailDream(newDream);
     console.log(`[Email] Successfully saved new dream for: ${childName}`);
     return res.status(201).json({ message: 'Dream successfully saved to email_dreams!' });
 
