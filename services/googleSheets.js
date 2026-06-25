@@ -21,10 +21,11 @@ const SHEETS = {
   },
   email: {
     name: 'מייל',
-    headers: ['תאריך', 'שם', 'טלפון', 'מייל', 'תיאור החלום'],
+    headers: ['תאריך', 'שם', 'כתובת', 'טלפון', 'מייל', 'תיאור החלום'],
     formatRow: (dream) => [
       formatDate(dream.createdAt),
       dream.childName || '',
+      dream.address || '',
       dream.phone,
       dream.email || '',
       dream.dreamDescription,
@@ -152,6 +153,7 @@ function emailToCombinedRecord(dream) {
     createdAt: dream.createdAt,
     source: 'email',
     childName: dream.childName,
+    address: dream.address,
     email: dream.email,
     phone: dream.phone,
     dreamDescription: dream.dreamDescription,
