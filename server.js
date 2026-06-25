@@ -6,6 +6,7 @@ const emailDreamsRouter = require('./routes/emailDreams');
 const yemotDreamsRouter = require('./routes/yemotDreams');
 const landingDreamsRouter = require('./routes/landingDreams');
 const { syncAllDreamsToSheets } = require('./services/googleSheets');
+const { startYemotPoller } = require('./services/yemotPoller');
 
 const app = express();
 
@@ -29,6 +30,8 @@ mongoose.connect(mongoURI)
     } catch (err) {
       console.error('[Google Sheets] Startup sync failed:', err.message);
     }
+
+    startYemotPoller();
   })
   .catch((err) => console.error('MongoDB connection error:', err));
 

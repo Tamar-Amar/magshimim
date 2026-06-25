@@ -33,6 +33,15 @@ const SHEETS = {
   },
   yemot: {
     name: 'ימות המשיח',
+    headers: ['תאריך', 'שם', 'טלפון', 'תיאור החלום', 'מספר רישום', 'קישור להקלטה'],
+    formatRow: (dream) => [
+      formatDate(dream.createdAt),
+      dream.childName || '',
+      dream.phone,
+      dream.dreamDescription || '',
+      dream.callId || '',
+      dream.recordingUrl || '',
+    ],
   },
   irregular: {
     name: 'לא תקינים',
@@ -282,8 +291,8 @@ async function syncAllDreamsToSheets() {
     writeSheet(SHEETS.landing, landingDreams.map(SHEETS.landing.formatRow)),
     writeSheet(SHEETS.email, emailDreams.map(SHEETS.email.formatRow)),
     writeSheet(SHEETS.irregular, irregularRequests.map(SHEETS.irregular.formatRow)),
+    writeSheet(SHEETS.yemot, yemotDreams.map(SHEETS.yemot.formatRow)),
     writeSheet(SHEETS.all, combinedRows),
-    ensureSheetExists(SHEETS.yemot.name),
   ]);
 
   console.log(`[Google Sheets] Synced ${landingDreams.length} landing + ${emailDreams.length} email + ${yemotDreams.length} yemot + ${irregularRequests.length} irregular + ${combinedRows.length} combined`);
@@ -318,7 +327,10 @@ async function appendEmailDream(dream) {
 async function appendYemotDream(dream) {
   if (!isConfigured()) return;
   try {
-    await appendRow(SHEETS.all, yemotToCombinedRecord(dream));
+    await Promise.all([
+      appendRow(SHEETS.yemot, dream),
+      appendRow(SHEETS.all, yemotToCombinedRecord(dream)),
+    ]);
     console.log(`[Google Sheets] Appended yemot dream for phone: ${dream.phone}`);
   } catch (error) {
     console.error('[Google Sheets] Failed to append yemot dream:', error.message);
