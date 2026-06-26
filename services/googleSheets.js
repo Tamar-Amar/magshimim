@@ -9,7 +9,7 @@ const NA = '--';
 const SHEETS = {
   landing: {
     name: 'דף נחיתה',
-    headers: ['תאריך', 'שם', 'כתובת', 'מייל', 'טלפון', 'תיאור החלום'],
+    headers: ['תאריך', 'שם', 'שכונה', 'מייל', 'טלפון', 'תיאור החלום'],
     formatRow: (dream) => [
       formatDate(dream.createdAt),
       dream.childName,

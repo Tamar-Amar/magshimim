@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 // חלומות שהגיעו מטופס דף הנחיתה (המשתמש מילא את הפרטים בעצמו)
 const LandingDreamSchema = new mongoose.Schema({
   childName: { type: String, required: true }, // שם מלא כולל שם משפחה
-  address: { type: String, required: true },
+  address: { type: String, required: true }, // שכונה (נשמר בשדה address לתאימות לאחור)
   email: { type: String, required: true },
   phone: { type: String, required: true },
   dreamDescription: { type: String, required: true },

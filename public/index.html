@@ -32,11 +32,6 @@
         <input type="text" id="childName" name="childName" placeholder="למשל: נועה כהן" required />
       </div>
 
-      <div class="field">
-        <label for="address">כתובת <span class="req">*</span></label>
-        <input type="text" id="address" name="address" placeholder="רחוב, מספר, עיר" required />
-      </div>
-
       <div class="row">
         <div class="field">
           <label for="phone">טלפון <span class="req">*</span></label>
@@ -45,6 +40,25 @@
         <div class="field">
           <label for="email">אימייל <span class="req">*</span></label>
           <input type="email" id="email" name="email" placeholder="name@example.com" required />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="neighborhood">שכונה <span class="req">*</span></label>
+        <div class="combobox" id="neighborhood-combobox">
+          <input
+            type="text"
+            id="neighborhood"
+            name="neighborhood"
+            placeholder="חפשו ובחרו שכונה..."
+            autocomplete="off"
+            role="combobox"
+            aria-expanded="false"
+            aria-controls="neighborhood-list"
+            aria-autocomplete="list"
+            required
+          />
+          <ul id="neighborhood-list" class="combobox-list" role="listbox" hidden></ul>
         </div>
       </div>
 
@@ -68,7 +82,9 @@
     <div class="overlay-card">
       <div class="overlay-balloon" aria-hidden="true"></div>
       <h2>החלום נשלח!</h2>
-      <p>תודה ששיתפתם אותנו. ובכל שבוע נגשים חלום אחד מיוחד – אולי הפעם זה שלכם!</p>
+      <p>תודה ששיתפתם אותנו.</p>
+      <p>בכל שבוע נגשים חלום אחד מיוחד – אולי הפעם זה שלכם!</p>
+
     </div>
   </div>
 

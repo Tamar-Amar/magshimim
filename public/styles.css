@@ -197,6 +197,60 @@ input.invalid, textarea.invalid {
   box-shadow: 0 0 0 4px rgba(232, 90, 122, 0.14);
 }
 
+.combobox {
+  position: relative;
+}
+
+.combobox.open input {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-color: transparent;
+}
+
+.combobox-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  max-height: 220px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid var(--accent);
+  border-top: none;
+  border-radius: 0 0 14px 14px;
+  box-shadow: 0 12px 24px rgba(150, 110, 180, 0.18);
+}
+
+.combobox-option {
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.combobox-option:hover,
+.combobox-option.highlighted {
+  background: var(--accent-soft);
+}
+
+.combobox-option-fallback {
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(120, 82, 140, 0.15);
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.combobox-empty {
+  padding: 10px 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
 .submit {
   position: relative;
   margin-top: 6px;
