@@ -24,6 +24,8 @@ const VALID_NEIGHBORHOODS = [...NEIGHBORHOOD_NAMES, NEIGHBORHOOD_NOT_FOUND];
 const neighborhoodInput = document.getElementById('neighborhood');
 const neighborhoodList = document.getElementById('neighborhood-list');
 const neighborhoodCombobox = document.getElementById('neighborhood-combobox');
+const customNeighborhoodField = document.getElementById('custom-neighborhood-field');
+const customNeighborhoodInput = document.getElementById('customNeighborhood');
 
 const requiredFields = ['childName', 'neighborhood', 'email', 'phone', 'dreamDescription'];
 
@@ -93,11 +95,25 @@ function highlightOption(index) {
   }
 }
 
+function isNeighborhoodNotFound() {
+  return normalizeSearch(neighborhoodInput.value) === NEIGHBORHOOD_NOT_FOUND;
+}
+
+function toggleCustomNeighborhood() {
+  const show = isNeighborhoodNotFound();
+  customNeighborhoodField.hidden = !show;
+  if (!show) {
+    customNeighborhoodInput.value = '';
+    customNeighborhoodInput.classList.remove('invalid');
+  }
+}
+
 function selectNeighborhood(name) {
   neighborhoodInput.value = name;
   neighborhoodInput.classList.remove('invalid');
   setListOpen(false);
   highlightedIndex = -1;
+  toggleCustomNeighborhood();
 }
 
 function openNeighborhoodList() {
@@ -132,6 +148,15 @@ function validate() {
     el.classList.remove('invalid');
   }
 
+  if (isNeighborhoodNotFound()) {
+    if (!customNeighborhoodInput.value.trim()) {
+      customNeighborhoodInput.classList.add('invalid');
+      valid = false;
+    } else {
+      customNeighborhoodInput.classList.remove('invalid');
+    }
+  }
+
   return valid;
 }
 
@@ -141,6 +166,7 @@ neighborhoodInput.addEventListener('focus', () => {
 
 neighborhoodInput.addEventListener('input', () => {
   neighborhoodInput.classList.remove('invalid');
+  toggleCustomNeighborhood();
   openNeighborhoodList();
 });
 
@@ -197,6 +223,9 @@ form.addEventListener('submit', async (e) => {
   const payload = {
     childName: form.childName.value.trim(),
     address: normalizeSearch(form.neighborhood.value),
+    customNeighborhood: isNeighborhoodNotFound()
+      ? normalizeSearch(customNeighborhoodInput.value)
+      : '',
     email: form.email.value.trim(),
     phone: form.phone.value.trim(),
     dreamDescription: form.dreamDescription.value.trim(),
@@ -216,6 +245,7 @@ form.addEventListener('submit', async (e) => {
 
     if (res.ok) {
       form.reset();
+      toggleCustomNeighborhood();
       setListOpen(false);
       overlay.hidden = false;
       submitBtn.classList.remove('loading');

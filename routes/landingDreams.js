@@ -23,8 +23,9 @@ const VALID_NEIGHBORHOODS = [...NEIGHBORHOOD_NAMES, NEIGHBORHOOD_NOT_FOUND];
 
 router.post('/', async (req, res) => {
   try {
-    const { childName, address, email, phone, dreamDescription } = req.body;
+    const { childName, address, customNeighborhood, email, phone, dreamDescription } = req.body;
     const neighborhood = address?.trim();
+    const customNeighborhoodValue = customNeighborhood?.trim();
 
     // ולידציה בסיסית בצד השרת (בנוסף לוולידציה בדפדפן)
     if (!childName || !neighborhood || !email || !phone || !dreamDescription) {
@@ -41,9 +42,21 @@ router.post('/', async (req, res) => {
       });
     }
 
+    // אם המשתמש בחר "לא מצאתי את השכונה שלי" – חובה למלא שכונה בטקסט חופשי
+    if (neighborhood === NEIGHBORHOOD_NOT_FOUND && !customNeighborhoodValue) {
+      return res.status(400).json({
+        success: false,
+        message: 'נא לכתוב את שם השכונה שלך.',
+      });
+    }
+
+    // השכונה שתישמר: הטקסט החופשי כאשר נבחר "לא מצאתי", אחרת השכונה מהרשימה
+    const finalNeighborhood =
+      neighborhood === NEIGHBORHOOD_NOT_FOUND ? customNeighborhoodValue : neighborhood;
+
     const newDream = new LandingDream({
       childName,
-      address: neighborhood,
+      address: finalNeighborhood,
       email,
       phone,
       dreamDescription,
