@@ -159,6 +159,7 @@ form {
 }
 
 .field { display: flex; flex-direction: column; gap: 7px; }
+.field[hidden] { display: none; }
 
 label {
   font-size: 0.92rem;
