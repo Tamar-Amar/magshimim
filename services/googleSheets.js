@@ -33,10 +33,11 @@ const SHEETS = {
   },
   yemot: {
     name: 'ימות המשיח',
-    headers: ['תאריך', 'שם', 'טלפון', 'תיאור החלום', 'מספר רישום', 'קישור להקלטה'],
+    headers: ['תאריך', 'שם', 'שכונה', 'טלפון', 'תיאור החלום', 'מספר רישום', 'קישור להקלטה'],
     formatRow: (dream) => [
       formatDate(dream.createdAt),
       dream.childName || '',
+      dream.address || dream.neighborhoodCode || '',
       dream.phone,
       dream.dreamDescription || '',
       dream.callId || '',
@@ -174,6 +175,7 @@ function yemotToCombinedRecord(dream) {
     createdAt: dream.createdAt,
     source: 'yemot',
     childName: dream.childName,
+    address: dream.address || dream.neighborhoodCode,
     phone: dream.phone,
     dreamDescription: dream.dreamDescription,
     callId: dream.callId,

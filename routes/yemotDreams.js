@@ -3,6 +3,7 @@ const router = express.Router();
 const YemotDream = require('../models/YemotDream');
 const IrregularRequest = require('../models/IrregularRequest');
 const { appendIrregularRequest, appendYemotDream } = require('../services/googleSheets');
+const { resolveNeighborhood } = require('../services/yemotApi');
 
 // ימות המשיח שולחים בדרך כלל בקשת GET עם הפרמטרים ב-URL (Query Parameters),
 // אבל אם בעתיד תעברי דרך Make עם POST - גם זה ייתפס. לכן ממזגים query + body.
@@ -10,6 +11,8 @@ async function handleYemotDream(req, res) {
   try {
     const data = { ...req.query, ...req.body };
     const { childName, phone, dreamDescription, callId, recordingUrl } = data;
+    const neighborhoodCode = data.P050 ?? data.neighborhoodCode ?? null;
+    const address = resolveNeighborhood(neighborhoodCode);
 
     // בלי טלפון אין למי לחזור - נשמור כפנייה חריגה
     if (!phone) {
@@ -31,6 +34,8 @@ async function handleYemotDream(req, res) {
       childName,
       phone,
       dreamDescription,
+      address,
+      neighborhoodCode,
       callId,
       recordingUrl,
     });

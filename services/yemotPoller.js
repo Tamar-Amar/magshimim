@@ -43,6 +43,8 @@ async function saveYemotRecord(record) {
     childName: record.childName,
     phone: record.phone,
     dreamDescription: record.dreamDescription,
+    address: record.neighborhood,
+    neighborhoodCode: record.neighborhoodCode,
     callId: record.callId,
     recordingUrl: record.recordingUrl,
   });

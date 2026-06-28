@@ -1,5 +1,29 @@
 const API_BASE = 'https://www.call2all.co.il/ym/api';
 
+// מיפוי קוד השכונה שהמתקשר מקיש בתפריט ימות (שדה P050) לשם השכונה.
+// יש למלא בהתאם להגדרת התפריט בימות המשיח.
+const NEIGHBORHOOD_BY_CODE = {
+  '0': 'אחר',
+  '1': 'רמה א',
+  '2': 'רמה ב',
+  '3': 'רמה ג1',
+  '4': 'רמה ג2',
+  '5': 'רמה ד',
+  '6': 'רמה ה',
+  '7': 'רמת אברהם',
+  '8': 'בר אילן',
+  '9': 'ותיקה',
+  '10': 'חפציבה',
+  '11': 'קריה חרדית',
+};
+
+function resolveNeighborhood(code) {
+  if (code === null || code === undefined || String(code).trim() === '') {
+    return null;
+  }
+  return NEIGHBORHOOD_BY_CODE[String(code).trim()] || null;
+}
+
 function buildApiUrl(cmd, params, token) {
   const url = new URL(`${API_BASE}/${cmd}`);
   url.searchParams.set('token', token);
@@ -74,6 +98,8 @@ async function fetchYemotRecords(token, extension) {
       callId: booking,
       childName: data.P000 || null,
       dreamDescription: data.P001 || null,
+      neighborhoodCode: data.P050 || null,
+      neighborhood: resolveNeighborhood(data.P050),
       phone: data.Phone || null,
       recordedAt: [data.Date, data.Time].filter(Boolean).join(' ').trim() || null,
       recordingUrl: buildRecordingUrl(recordingPath, token),
@@ -88,4 +114,6 @@ module.exports = {
   buildRecordingUrl,
   fetchYemotRecords,
   parseYmgr,
+  resolveNeighborhood,
+  NEIGHBORHOOD_BY_CODE,
 };
