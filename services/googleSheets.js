@@ -6,6 +6,13 @@ const IrregularRequest = require('../models/IrregularRequest');
 
 const NA = '--';
 
+// חלומות מימות המשיח שלא יעלו לגיליון כלל (לפי מזהה שיחה)
+const EXCLUDED_YEMOT_CALL_IDS = new Set(['5']);
+
+function isExcludedYemotDream(dream) {
+  return dream?.callId != null && EXCLUDED_YEMOT_CALL_IDS.has(String(dream.callId));
+}
+
 const SHEETS = {
   landing: {
     name: 'דף נחיתה',
@@ -287,17 +294,19 @@ async function syncAllDreamsToSheets() {
     IrregularRequest.find().sort({ createdAt: -1 }).lean(),
   ]);
 
-  const combinedRows = buildCombinedRows(landingDreams, emailDreams, yemotDreams, irregularRequests);
+  const filteredYemotDreams = yemotDreams.filter((dream) => !isExcludedYemotDream(dream));
+
+  const combinedRows = buildCombinedRows(landingDreams, emailDreams, filteredYemotDreams, irregularRequests);
 
   await Promise.all([
     writeSheet(SHEETS.landing, landingDreams.map(SHEETS.landing.formatRow)),
     writeSheet(SHEETS.email, emailDreams.map(SHEETS.email.formatRow)),
     writeSheet(SHEETS.irregular, irregularRequests.map(SHEETS.irregular.formatRow)),
-    writeSheet(SHEETS.yemot, yemotDreams.map(SHEETS.yemot.formatRow)),
+    writeSheet(SHEETS.yemot, filteredYemotDreams.map(SHEETS.yemot.formatRow)),
     writeSheet(SHEETS.all, combinedRows),
   ]);
 
-  console.log(`[Google Sheets] Synced ${landingDreams.length} landing + ${emailDreams.length} email + ${yemotDreams.length} yemot + ${irregularRequests.length} irregular + ${combinedRows.length} combined`);
+  console.log(`[Google Sheets] Synced ${landingDreams.length} landing + ${emailDreams.length} email + ${filteredYemotDreams.length} yemot + ${irregularRequests.length} irregular + ${combinedRows.length} combined`);
 }
 
 async function appendLandingDream(dream) {
@@ -328,6 +337,10 @@ async function appendEmailDream(dream) {
 
 async function appendYemotDream(dream) {
   if (!isConfigured()) return;
+  if (isExcludedYemotDream(dream)) {
+    console.log(`[Google Sheets] Skipped excluded yemot dream. Booking: ${dream.callId}`);
+    return;
+  }
   try {
     await Promise.all([
       appendRow(SHEETS.yemot, dream),
